@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResiIntel: Residential Infrastructure Risk Assessment & QA</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 1. Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    <span>ResiIntel</span>
+                </div>
+                <span class="badge badge-pulse">QA System</span>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Select Property</h3>
+                <ul class="property-list" id="propertyList">
+                    <!-- Dynamic property items inserted here -->
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <div class="status-dot online"></div>
+                    <div>
+                        <p class="status-title">FastAPI Backend</p>
+                        <p class="status-subtitle">Online | SQLite Active</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 2. Main Work Panel -->
+        <main class="main-panel">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="property-info">
+                    <h1 id="selectedPropertyName">Loading Property...</h1>
+                    <p id="selectedPropertyAddress">Loading Address...</p>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="btnExportPdf">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Export PDF Report
+                    </button>
+                </div>
+            </header>
+
+            <!-- Metrics Row -->
+            <section class="metrics-grid">
+                <!-- Gauge Card -->
+                <div class="metric-card main-gauge-card">
+                    <div class="card-header">
+                        <h4>Overall Risk Score</h4>
+                        <span class="info-tooltip" title="Weighted risk calculation based on severities, confidence, room multiplier, and repeats.">?</span>
+                    </div>
+                    <div class="gauge-container">
+                        <div class="gauge-circle">
+                            <svg viewBox="0 0 100 100" class="gauge-svg">
+                                <circle cx="50" cy="50" r="40" class="gauge-track"></circle>
+                                <circle cx="50" cy="50" r="40" class="gauge-fill" id="overallRiskGaugeFill"></circle>
+                            </svg>
+                            <div class="gauge-center">
+                                <span class="gauge-value" id="overallRiskScoreText">0</span>
+                                <span class="gauge-max">/100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gauge-footer">
+                        <span class="status-badge" id="overallRiskStatusBadge">OK</span>
+                    </div>
+                </div>
+
+                <!-- KPI 1: Trend Forecast -->
+                <div class="metric-card">
+                    <div class="card-header">
+                        <h4>Trend Projection</h4>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="metric-icon teal">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                            <polyline points="17 6 23 6 23 12"/>
+                        </svg>
+                    </div>
+                    <div class="metric-body">
+                        <p class="metric-value text-glow" id="trendProjectedText">Stable</p>
+                        <p class="metric-subtitle" id="trendDescriptionText">Loading linear regression...</p>
+                    </div>
+                </div>
+
+                <!-- KPI 2: Active Defects -->
+                <div class="metric-card">
+                    <div class="card-header">
+                        <h4>Active Defects</h4>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="metric-icon red">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                    </div>
+                    <div class="metric-body">
+                        <p class="metric-value" id="activeDefectsText">0</p>
+                        <p class="metric-subtitle" id="defectsSubtitleText">Across all inspected areas</p>
+                    </div>
+                </div>
+
+                <!-- KPI 3: HITL Override Rate -->
+                <div class="metric-card">
+                    <div class="card-header">
+                        <h4>Human-in-the-Loop Override</h4>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="metric-icon amber">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <div class="metric-body">
+                        <p class="metric-value" id="overrideRateText">0%</p>
+                        <p class="metric-subtitle" id="overrideCountText">0 overrides logged</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Risk History & Predictive Trend</h3>
+                        <span class="badge info">Linear Regression</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="riskHistoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Defect Category Distribution</h3>
+                        <span class="badge info">Real-time Breakdowns</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="defectDoughnutChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rooms Grid Section -->
+            <section class="rooms-section">
+                <div class="section-header">
+                    <h2>Room Risk Profile</h2>
+                    <p>Select a room to run an inspection or view existing findings</p>
+                </div>
+                <div class="rooms-grid" id="roomsGrid">
+                    <!-- Dynamic room cards inserted here -->
+                </div>
+            </section>
+
+            <!-- Inspection Workspace Section (Hidden by default, shown when room is selected) -->
+            <section class="inspection-workspace" id="inspectionWorkspace" style="display: none;">
+                <div class="section-header-inline">
+                    <h2>Inspection Center: <span id="currentInspectionRoomName">Kitchen</span></h2>
+                    <button class="btn btn-icon-only" id="btnCloseWorkspace" title="Close workspace">✕</button>
+                </div>
+
+                <!-- Visual Processing Pipeline Stepper -->
+                <div class="pipeline-container">
+                    <div class="pipeline-line"></div>
+                    <div class="pipeline-step" id="step-upload" data-step="0">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                        </div>
+                        <span class="step-label">Upload Image</span>
+                    </div>
+                    <div class="pipeline-step" id="step-validate" data-step="1">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <span class="step-label">Stage 0: Validation</span>
+                    </div>
+                    <div class="pipeline-step" id="step-vision" data-step="2">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            </svg>
+                        </div>
+                        <span class="step-label">Stage 1: Gemini Vision</span>
+                    </div>
+                    <div class="pipeline-step" id="step-rag" data-step="3">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <span class="step-label">Stage 2: Code RAG</span>
+                    </div>
+                    <div class="pipeline-step" id="step-synthesis" data-step="4">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <span class="step-label">Stage 3: Recommendation</span>
+                    </div>
+                    <div class="pipeline-step" id="step-risk" data-step="5">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                                <line x1="4" y1="22" x2="4" y2="15"/>
+                            </svg>
+                        </div>
+                        <span class="step-label">Calculate Risk</span>
+                    </div>
+                </div>
+
+                <div class="workspace-grid">
+                    <!-- Form Column -->
+                    <div class="workspace-card form-column">
+                        <h3>New Inspection Input</h3>
+                        <form id="inspectionForm" enctype="multipart/form-data">
+                            <input type="hidden" id="formRoomId" name="room_id">
+                            
+                            <!-- File upload drag and drop -->
+                            <div class="upload-zone" id="uploadZone">
+                                <input type="file" id="fileInput" name="image" accept="image/*" class="file-input-hidden">
+                                <div class="upload-inner" id="uploadInner">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                                        <polyline points="21 15 16 10 5 21"/>
+                                    </svg>
+                                    <p class="upload-title">📷 Upload Inspection Image</p>
+                                    <p class="upload-subtitle">Click to select or drag and drop image here</p>
+                                </div>
+                                <div class="preview-container" id="previewContainer" style="display:none;">
+                                    <img id="imagePreview" src="" alt="Inspection preview">
+                                    <button type="button" class="btn-remove-preview" id="btnRemovePreview">Remove ✕</button>
+                                </div>
+                            </div>
+
+                            <div class="format-notes">
+                                <div class="notes-col">
+                                    <span class="tag-ok">Supported:</span> Walls, Ceilings, Wiring, Beams, Flooring, Plumbing.
+                                </div>
+                                <div class="notes-col">
+                                    <span class="tag-crit">Unsupported:</span> Flowers, Pets, Selfies, Cars, Food.
+                                </div>
+                            </div>
+
+                            <!-- Notes -->
+                            <div class="form-group">
+                                <label for="notesText">Inspector Observational Notes</label>
+                                <textarea id="notesText" name="notes_text" rows="3" placeholder="Describe defects, stains, damaged fixtures, or structural concerns..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block" id="btnSubmitInspection">
+                                Run Intelligent Inspection
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- AI Outputs Column -->
+                    <div class="workspace-card output-column">
+                        <h3>Assessment Results</h3>
+                        
+                        <!-- 1. Pipeline status block / loader -->
+                        <div class="pipeline-loader" id="pipelineLoader" style="display:none;">
+                            <div class="spinner"></div>
+                            <p id="pipelineStatusText">Analyzing uploaded file content...</p>
+                        </div>
+
+                        <!-- 2. Image Validation Warning Banner (Transient) -->
+                        <div class="validation-warning-card" id="validationWarningCard" style="display:none;">
+                            <div class="warning-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="warning-icon">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                    <line x1="12" y1="9" x2="12" y2="13"/>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                </svg>
+                                <h4>Image Validation Failed</h4>
+                            </div>
+                            <div class="warning-body">
+                                <div class="meta-row">
+                                    <span>Detected Scene:</span>
+                                    <strong id="valSceneText" class="badge bg-red">Unknown</strong>
+                                </div>
+                                <div class="meta-row">
+                                    <span>AI Confidence:</span>
+                                    <strong id="valConfidenceText">0%</strong>
+                                </div>
+                                <p id="valReasonText" class="warning-reason">This image does not contain residential infrastructure.</p>
+                            </div>
+                        </div>
+
+                        <!-- 3. Real AI results detail (Initially hidden) -->
+                        <div class="ai-results-block" id="aiResultsBlock" style="display:none;">
+                            <!-- Top stats row -->
+                            <div class="ai-stats-row">
+                                <div>
+                                    <span class="label">AI Classified Defect</span>
+                                    <h4 id="resDefectClass">Exposed Wiring</h4>
+                                </div>
+                                <div>
+                                    <span class="label">AI Severity</span>
+                                    <span class="status-badge" id="resSeverityBadge">Critical</span>
+                                </div>
+                            </div>
+
+                            <!-- Confidence visualizer -->
+                            <div class="confidence-bar-container">
+                                <span class="label">AI Classification Confidence</span>
+                                <div class="confidence-bar-wrapper">
+                                    <div class="confidence-bar-fill" id="resConfidenceFill"></div>
+                                    <span class="confidence-text" id="resConfidenceText">96%</span>
+                                </div>
+                            </div>
+
+                            <!-- RAG guidelines reference list -->
+                            <div class="rag-codes-section">
+                                <span class="label">Retrieved Building Safety Regulations (RAG)</span>
+                                <div class="rag-codes-list" id="resRagCodesList">
+                                    <!-- Dynamic list of guidelines references -->
+                                </div>
+                            </div>
+
+                            <!-- AI contextual recommendation -->
+                            <div class="ai-recommendation-box">
+                                <span class="label">AI Justified Recommendation</span>
+                                <p id="resRecommendationText">Generate a plan...</p>
+                            </div>
+
+                            <!-- HITL Override Panel -->
+                            <div class="hitl-override-panel">
+                                <div class="hitl-header">
+                                    <h4>Human-in-the-Loop Override</h4>
+                                    <span class="badge info">Governance Audit Logged</span>
+                                </div>
+                                <form id="overrideForm">
+                                    <input type="hidden" id="overrideFindingId">
+                                    <div class="override-grid">
+                                        <div class="form-group">
+                                            <label for="overrideDefectClass">Override Defect Category</label>
+                                            <select id="overrideDefectClass">
+                                                <option value="Electrical Safety">Electrical Safety</option>
+                                                <option value="Structural Integrity">Structural Integrity</option>
+                                                <option value="Water Damage & Dampness">Water Damage & Dampness</option>
+                                                <option value="Fire Safety">Fire Safety</option>
+                                                <option value="Mechanical & Plumbing">Mechanical & Plumbing</option>
+                                                <option value="Quality & Finish">Quality & Finish</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="overrideSeverity">Override Severity</label>
+                                            <select id="overrideSeverity">
+                                                <option value="Critical">🟥 Critical</option>
+                                                <option value="High">🟧 High</option>
+                                                <option value="Medium">🟨 Medium</option>
+                                                <option value="Low">🟩 Low</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="overrideReason">Justification / Reason for Override</label>
+                                        <input type="text" id="overrideReason" placeholder="Describe the physical rationale for changing AI outputs..." required>
+                                    </div>
+                                    <button type="submit" class="btn btn-secondary btn-block">
+                                        Submit Override Decision
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- 4. Default Empty State -->
+                        <div class="output-empty-state" id="outputEmptyState">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            <p>Awaiting inspection upload.</p>
+                            <span>Fill out the form and submit to run the multimodal analysis.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Existing Room Findings List (if any) -->
+                <div class="existing-findings-box" id="existingFindingsBox">
+                    <h3>Logged Findings in this Area</h3>
+                    <div class="findings-list" id="roomFindingsList">
+                        <!-- Dynamic list of findings for this room -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Audit Trail / Property Timeline Section -->
+            <section class="timeline-section">
+                <div class="section-header">
+                    <h2>Property Governance & Audit Timeline</h2>
+                    <p>Chronological record of detections, manual overrides, and structural modifications</p>
+                </div>
+                <div class="timeline-feed" id="timelineFeed">
+                    <!-- Dynamic timeline elements inserted here -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>

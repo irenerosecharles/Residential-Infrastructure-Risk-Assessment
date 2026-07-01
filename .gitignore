@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ResiIntel Project Specifics
+backend/resiintel.db
+backend/uploads/
+backend/reports/
+
