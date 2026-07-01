@@ -1,0 +1,250 @@
+[
+  {
+    "id": "prop-01",
+    "name": "Grandview Apartments - Unit 405",
+    "address": "405 Grandview Ave, Sector 4",
+    "overall_risk_score": 72.5,
+    "risk_history": [
+      { "timestamp": "2026-06-22T09:00:00Z", "score": 10.0 },
+      { "timestamp": "2026-06-23T11:30:00Z", "score": 10.0 },
+      { "timestamp": "2026-06-24T14:15:00Z", "score": 38.5 },
+      { "timestamp": "2026-06-25T10:00:00Z", "score": 38.5 },
+      { "timestamp": "2026-06-26T16:45:00Z", "score": 45.0 },
+      { "timestamp": "2026-06-27T10:30:00Z", "score": 72.5 }
+    ],
+    "rooms": [
+      {
+        "id": "room-01-kitchen",
+        "name": "Kitchen",
+        "importance_multiplier": 1.3,
+        "current_risk_score": 93.6,
+        "status": "Critical",
+        "findings": [
+          {
+            "finding_id": "find-01-01",
+            "timestamp": "2026-06-27T10:30:00Z",
+            "image_url": "/assets/exposed_wiring.jpg",
+            "notes_text": "Observed bare cables hanging from the ceiling junction box above the stove. No cover plate or conduit installed.",
+            "ai_defect_class": "Exposed Wiring",
+            "ai_severity": "Critical",
+            "ai_confidence": 0.96,
+            "inspector_defect_class": "Exposed Wiring",
+            "inspector_severity": "Critical",
+            "is_overridden": false,
+            "override_reason": "",
+            "retrieved_codes": ["NEC-300.11"],
+            "ai_recommendation": "IMMEDIATE HAZARD: Exposed live wiring in active food preparation zone. Enclose wires in approved conduits and install cover plate immediately.",
+            "priority": "Immediate Action"
+          }
+        ]
+      },
+      {
+        "id": "room-01-bathroom",
+        "name": "Bathroom",
+        "importance_multiplier": 1.2,
+        "current_risk_score": 64.8,
+        "status": "High",
+        "findings": [
+          {
+            "finding_id": "find-01-02",
+            "timestamp": "2026-06-24T14:15:00Z",
+            "image_url": "/assets/damp_wall.jpg",
+            "notes_text": "Water stains on the drywall adjacent to the shower. The surface feels damp to the touch.",
+            "ai_defect_class": "Building Envelope Moisture Control",
+            "ai_severity": "High",
+            "ai_confidence": 0.90,
+            "inspector_defect_class": "Building Envelope Moisture Control",
+            "inspector_severity": "High",
+            "is_overridden": false,
+            "override_reason": "",
+            "retrieved_codes": ["IRC-R703"],
+            "ai_recommendation": "Inspect tiling grout and shower seal. Use dehumidifier to dry area and prevent mold growth.",
+            "priority": "Within 24 Hours"
+          }
+        ]
+      },
+      {
+        "id": "room-01-living",
+        "name": "Living Room",
+        "importance_multiplier": 1.0,
+        "current_risk_score": 38.0,
+        "status": "Medium",
+        "findings": [
+          {
+            "finding_id": "find-01-03",
+            "timestamp": "2026-06-26T16:45:00Z",
+            "image_url": "/assets/loose_carpet.jpg",
+            "notes_text": "Living room carpet is loose and buckling near the transition strip to the hallway.",
+            "ai_defect_class": "Uneven Stair Treads and Floor Finishes",
+            "ai_severity": "Medium",
+            "ai_confidence": 0.85,
+            "inspector_defect_class": "Uneven Stair Treads and Floor Finishes",
+            "inspector_severity": "Low",
+            "is_overridden": true,
+            "override_reason": "Low traffic area, minor trip hazard only. Downgraded to Low severity.",
+            "retrieved_codes": ["IRC-R311"],
+            "ai_recommendation": "Stretch carpet and re-tack at transition strip to prevent minor trip hazard.",
+            "priority": "Schedule Inspection"
+          }
+        ]
+      },
+      {
+        "id": "room-01-bedroom",
+        "name": "Bedroom 1",
+        "importance_multiplier": 1.1,
+        "current_risk_score": 0.0,
+        "status": "OK",
+        "findings": []
+      }
+    ],
+    "timeline": [
+      {
+        "timestamp": "2026-06-22T09:00:00Z",
+        "event_type": "info",
+        "message": "Property inspection started. Baseline risk score initialized."
+      },
+      {
+        "timestamp": "2026-06-24T14:15:00Z",
+        "event_type": "defect_detected",
+        "message": "Damp wall detected in Bathroom. Risk score increased."
+      },
+      {
+        "timestamp": "2026-06-26T16:45:00Z",
+        "event_type": "defect_detected",
+        "message": "Loose floor finishing detected in Living Room. AI flagged Medium severity."
+      },
+      {
+        "timestamp": "2026-06-26T16:50:00Z",
+        "event_type": "inspector_override",
+        "message": "Inspector downgraded Living Room finish defect from Medium to Low."
+      },
+      {
+        "timestamp": "2026-06-27T10:30:00Z",
+        "event_type": "defect_detected",
+        "message": "CRITICAL: Exposed wiring detected in Kitchen. Room status marked Critical."
+      }
+    ]
+  },
+  {
+    "id": "prop-02",
+    "name": "Oakwood Villa",
+    "address": "12 Pine Rd, Oakwood Hills",
+    "overall_risk_score": 38.4,
+    "risk_history": [
+      { "timestamp": "2026-06-17T10:00:00Z", "score": 5.0 },
+      { "timestamp": "2026-06-22T14:30:00Z", "score": 5.0 },
+      { "timestamp": "2026-06-27T11:00:00Z", "score": 38.4 }
+    ],
+    "rooms": [
+      {
+        "id": "room-02-kitchen",
+        "name": "Kitchen",
+        "importance_multiplier": 1.3,
+        "current_risk_score": 0.0,
+        "status": "OK",
+        "findings": []
+      },
+      {
+        "id": "room-02-living",
+        "name": "Living Room",
+        "importance_multiplier": 1.0,
+        "current_risk_score": 0.0,
+        "status": "OK",
+        "findings": []
+      },
+      {
+        "id": "room-02-garage",
+        "name": "Garage",
+        "importance_multiplier": 1.0,
+        "current_risk_score": 80.0,
+        "status": "High",
+        "findings": [
+          {
+            "finding_id": "find-02-01",
+            "timestamp": "2026-06-27T11:00:00Z",
+            "image_url": "/assets/structural_crack.jpg",
+            "notes_text": "Horizontal crack observed along the concrete support column, approximately 3.5mm wide.",
+            "ai_defect_class": "Structural Cracks and Foundation Settling",
+            "ai_severity": "Critical",
+            "ai_confidence": 0.80,
+            "inspector_defect_class": "Structural Cracks and Foundation Settling",
+            "inspector_severity": "High",
+            "is_overridden": true,
+            "override_reason": "No signs of widening since last year, but needs tracking. Changed to High.",
+            "retrieved_codes": ["IBC-1803.5"],
+            "ai_recommendation": "Consult structural engineer to monitor column stability and evaluate foundation settling.",
+            "priority": "Within 24 Hours"
+          }
+        ]
+      },
+      {
+        "id": "room-02-bedroom",
+        "name": "Master Bedroom",
+        "importance_multiplier": 1.1,
+        "current_risk_score": 0.0,
+        "status": "OK",
+        "findings": []
+      }
+    ],
+    "timeline": [
+      {
+        "timestamp": "2026-06-17T10:00:00Z",
+        "event_type": "info",
+        "message": "Property baseline registered. Structure appears intact."
+      },
+      {
+        "timestamp": "2026-06-27T11:00:00Z",
+        "event_type": "defect_detected",
+        "message": "Structural crack detected in Garage. AI flagged Critical severity."
+      },
+      {
+        "timestamp": "2026-06-27T11:05:00Z",
+        "event_type": "inspector_override",
+        "message": "Inspector modified Garage structural crack severity to High."
+      }
+    ]
+  },
+  {
+    "id": "prop-03",
+    "name": "Pinecrest Heights - Unit 12B",
+    "address": "77 Valley View Vista, Pinecrest",
+    "overall_risk_score": 0.0,
+    "risk_history": [
+      { "timestamp": "2026-06-25T11:00:00Z", "score": 0.0 },
+      { "timestamp": "2026-06-27T12:00:00Z", "score": 0.0 }
+    ],
+    "rooms": [
+      {
+        "id": "room-03-living",
+        "name": "Living Area",
+        "importance_multiplier": 1.0,
+        "current_risk_score": 0.0,
+        "status": "OK",
+        "findings": []
+      },
+      {
+        "id": "room-03-kitchen",
+        "name": "Kitchenette",
+        "importance_multiplier": 1.3,
+        "current_risk_score": 0.0,
+        "status": "OK",
+        "findings": []
+      },
+      {
+        "id": "room-03-bedroom",
+        "name": "Sleeping Area",
+        "importance_multiplier": 1.1,
+        "current_risk_score": 0.0,
+        "status": "OK",
+        "findings": []
+      }
+    ],
+    "timeline": [
+      {
+        "timestamp": "2026-06-25T11:00:00Z",
+        "event_type": "info",
+        "message": "Initial move-in inspection. Everything reported in optimal condition."
+      }
+    ]
+  }
+]

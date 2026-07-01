@@ -1,0 +1,58 @@
+[
+  {
+    "code": "NEC-300.11",
+    "title": "Exposed Wiring and Conductor Protection",
+    "category": "Electrical Safety",
+    "description": "Exposed electrical wiring, raw wire splices, and open terminal conductors are strictly prohibited in residential properties. All electrical conductors must be enclosed in approved conduits, junction boxes, or raceways to prevent accidental contact, shocks, electrocution, or electrical fires.",
+    "severity": "Critical"
+  },
+  {
+    "code": "IBC-1803.5",
+    "title": "Structural Cracks and Foundation Settling",
+    "category": "Structural Integrity",
+    "description": "Concrete foundation walls, load-bearing masonry, or structural concrete beams/columns showing visible cracks exceeding 2mm in width require physical structural assessment. Diagonal, horizontal, or stair-step cracks indicate structural stress, soil movement, or foundation displacement.",
+    "severity": "Critical"
+  },
+  {
+    "code": "IRC-R703",
+    "title": "Building Envelope Moisture Control",
+    "category": "Water Damage & Dampness",
+    "description": "Interior walls and ceilings must be fully protected from external moisture intrusion. Active water leaks, moisture pooling, or damp drywall (exceeding 20% relative moisture content) lead to wood rot, paint failure, structural degradation, and toxic mold growth.",
+    "severity": "High"
+  },
+  {
+    "code": "IBC-907.2",
+    "title": "Smoke Detector and Fire Alarm Systems",
+    "category": "Fire Safety",
+    "description": "Residential units must have operational, certified smoke detectors installed in every sleeping room, outside each separate sleeping area, and on every level of the dwelling. Missing devices or faulty alarm wiring present severe life safety risks.",
+    "severity": "Critical"
+  },
+  {
+    "code": "IPC-305.1",
+    "title": "Pipe Corrosion and Active Leakage",
+    "category": "Mechanical & Plumbing",
+    "description": "Plumbing supply lines, sanitary joints, and drainage pipes must remain entirely leak-free. Active leakage, calcification, or oxidation on valves and piping indicates corrosion that can cause sub-floor structural damage, dampness, and sanitary hazards.",
+    "severity": "High"
+  },
+  {
+    "code": "IRC-R311",
+    "title": "Uneven Stair Treads and Floor Finishes",
+    "category": "Quality & Finish",
+    "description": "Poor finishing, such as uneven floor surfaces, loose tiling, cracked floorboards, or improperly secured carpets, can lead to trip hazards. Interior flooring slopes should not exceed a ratio of 1:48 in pathways.",
+    "severity": "Medium"
+  },
+  {
+    "code": "IRC-R312",
+    "title": "Loose Handrails and Guardrails",
+    "category": "Structural Integrity",
+    "description": "Every residential staircase with 4 or more risers must have a continuous, secure handrail. Balconies, decks, and open stairs must have guardrails capable of resisting a concentrated load of 200 lbs applied at any point.",
+    "severity": "High"
+  },
+  {
+    "code": "IRC-R307",
+    "title": "Adequate Ventilation and Damp Prevention",
+    "category": "Water Damage & Dampness",
+    "description": "Bathrooms and kitchens require functional exhaust systems venting directly outdoors to prevent persistent moisture accumulation. Lack of ventilation leads to localized condensational dampness, peeling paint, and ceiling mold.",
+    "severity": "Medium"
+  }
+]
